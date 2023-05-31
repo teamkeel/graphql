@@ -8,8 +8,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/graphql-go/graphql/gqlerrors"
-	"github.com/graphql-go/graphql/language/ast"
+	"github.com/teamkeel/graphql/gqlerrors"
+	"github.com/teamkeel/graphql/language/ast"
 )
 
 type ExecuteParams struct {

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/graphql-go/graphql"
+	"github.com/teamkeel/graphql"
 )
 
 // Product contains information about one product
