@@ -197,6 +197,66 @@ func TestVariables_ObjectsAndNullability_UsingInlineStructs_ExecutesWithComplexI
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
+
+func TestVariables_NullVariableValue(t *testing.T) {
+	params := map[string]interface{}{
+		"input": map[string]interface{}{
+			"a": nil,
+			"c": "foo",
+			"d": "SerializedValue",
+		},
+	}
+	expected := &graphql.Result{
+		Data: map[string]interface{}{
+			"fieldWithObjectInput": `{"a":null,"c":"foo","d":"DeserializedValue"}`,
+		},
+	}
+
+	ast := testVariables_ObjectsAndNullability_UsingVariables_GetAST(t)
+
+	// execute
+	ep := graphql.ExecuteParams{
+		Schema: variablesTestSchema,
+		AST:    ast,
+		Args:   params,
+	}
+	result := testutil.TestExecute(t, ep)
+	if len(result.Errors) > 0 {
+		t.Fatalf("wrong result, unexpected errors: %v", result.Errors)
+	}
+	if !reflect.DeepEqual(expected, result) {
+		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
+	}
+}
+
+func TestVariables_NullLiteral(t *testing.T) {
+	doc := `
+        {
+          fieldWithObjectInput(input: {a: null, b: "bar", c: "baz"})
+        }
+	`
+	expected := &graphql.Result{
+		Data: map[string]interface{}{
+			"fieldWithObjectInput": `{"a":null,"b":["bar"],"c":"baz"}`,
+		},
+	}
+	// parse query
+	ast := testutil.TestParse(t, doc)
+
+	// execute
+	ep := graphql.ExecuteParams{
+		Schema: variablesTestSchema,
+		AST:    ast,
+	}
+	result := testutil.TestExecute(t, ep)
+	if len(result.Errors) > 0 {
+		t.Fatalf("wrong result, unexpected errors: %v", result.Errors)
+	}
+	if !reflect.DeepEqual(expected, result) {
+		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
+	}
+}
+
 func TestVariables_ObjectsAndNullability_UsingInlineStructs_ProperlyParsesSingleValueToList(t *testing.T) {
 	doc := `
         {
