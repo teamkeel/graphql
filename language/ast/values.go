@@ -172,6 +172,33 @@ func (v *BooleanValue) GetValue() interface{} {
 	return v.Value
 }
 
+type NullValue struct {
+	Kind string
+	Loc  *Location
+}
+
+func NewNullValue(v *NullValue) *NullValue {
+	if v == nil {
+		v = &NullValue{}
+	}
+	return &NullValue{
+		Kind: kinds.NullValue,
+		Loc:  v.Loc,
+	}
+}
+
+func (v *NullValue) GetKind() string {
+	return v.Kind
+}
+
+func (v *NullValue) GetLoc() *Location {
+	return v.Loc
+}
+
+func (v *NullValue) GetValue() interface{} {
+	return nil
+}
+
 // EnumValue implements Node, Value
 type EnumValue struct {
 	Kind  string

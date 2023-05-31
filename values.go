@@ -401,6 +401,10 @@ func valueFromAST(valueAST ast.Value, ttype Input, variables map[string]interfac
 			}
 			if !isNullish(value) {
 				obj[name] = value
+			} else if isNullish(value) {
+				if _, ok := fieldASTs[name]; ok {
+					obj[name] = nil
+				}
 			}
 		}
 		return obj
