@@ -53,6 +53,15 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_IntIntoFloat(t *testing.T) {
         }
     `)
 }
+func TestValidate_ArgValuesOfCorrectType_ValidValue_NullLiteral(t *testing.T) {
+	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
+        {
+          complicatedArgs {
+            stringArgField(stringArg: null)
+          }
+        }
+    `)
+}
 func TestValidate_ArgValuesOfCorrectType_ValidValue_IntIntoID(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
